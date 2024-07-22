@@ -16,7 +16,7 @@ func (h *UserHandler) EditUser(e echo.Context) error {
 	}
 
 	// validate input
-	if req.Password == "" || req.Username == "" || req.UserID <= 0 {
+	if req.Username == "" || req.UserID <= 0 {
 		return helper.ParseError(helper.ErrParam, e)
 	}
 

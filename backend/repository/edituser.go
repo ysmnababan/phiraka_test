@@ -31,22 +31,30 @@ func (r *Database) UpdateUser(in *models.EditReq) error {
 		}
 	}
 
-	var hashedpwd []byte
-	err = bcrypt.CompareHashAndPassword([]byte(u.Password), []byte(in.Password))
-	if err != nil {
-		hashedpwd, err = bcrypt.GenerateFromPassword([]byte(in.Password), bcrypt.DefaultCost)
+	if in.Password != "" {
+		var hashedpwd []byte
+		err = bcrypt.CompareHashAndPassword([]byte(u.Password), []byte(in.Password))
 		if err != nil {
-			return helper.ErrGeneratedPwd
+			hashedpwd, err = bcrypt.GenerateFromPassword([]byte(in.Password), bcrypt.DefaultCost)
+			if err != nil {
+				return helper.ErrGeneratedPwd
+			}
+			log.Println(hashedpwd)
+		} else {
+			hashedpwd = []byte(u.Password)
 		}
-		log.Println(hashedpwd)
-	} else {
-		hashedpwd = []byte(u.Password)
-	}
 
-	_, err = r.DB.Exec("UPDATE users SET Username = ? , Password = ? WHERE UserID = ? ", in.Username, hashedpwd, in.UserID)
-	if err != nil {
-		helper.Logging(nil).Error("error query: ", err)
-		return helper.ErrQuery
+		_, err = r.DB.Exec("UPDATE users SET Username = ? , Password = ? WHERE UserID = ? ", in.Username, hashedpwd, in.UserID)
+		if err != nil {
+			helper.Logging(nil).Error("error query: ", err)
+			return helper.ErrQuery
+		}
+	} else {
+		_, err = r.DB.Exec("UPDATE users SET Username = ?  WHERE UserID = ? ", in.Username, in.UserID)
+		if err != nil {
+			helper.Logging(nil).Error("error query: ", err)
+			return helper.ErrQuery
+		}
 	}
 
 	return nil
