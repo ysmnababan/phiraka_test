@@ -12,18 +12,18 @@ func (h *UserHandler) DeleteUser(e echo.Context) error {
 	var req models.DeleteReq
 	err := e.Bind(&req)
 	if err != nil {
-		helper.ParseError(helper.ErrBindJSON, e)
+		return helper.ParseError(helper.ErrBindJSON, e)
 	}
 
 	// validate input
 	if req.Username == "" {
-		helper.ParseError(helper.ErrParam, e)
+		return helper.ParseError(helper.ErrParam, e)
 	}
 
 	err = h.UR.DeleteUser(&req)
 	if err != nil {
 		helper.Logging(e).Error(err)
-		helper.ParseError(err, e)
+		return helper.ParseError(err, e)
 	}
 
 	return e.JSON(http.StatusOK, "USER DELETED SUCCESSFULLY")
