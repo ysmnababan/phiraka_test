@@ -20,6 +20,13 @@ func (h *UserHandler) Login(e echo.Context) error {
 	if err != nil {
 		return helper.ParseError(helper.ErrBindJSON, e)
 	}
+	log.Println(req)
+	expectedCaptcha, exists := captchaStore[req.CaptchaID]
+	delete(captchaStore, req.CaptchaID)
+
+	if !exists || req.Captcha != expectedCaptcha {
+		return e.JSON(http.StatusUnauthorized, map[string]string{"message": "CAPTCHA INVALID"})
+	}
 
 	// validate input
 	if req.Password == "" || req.Username == "" {

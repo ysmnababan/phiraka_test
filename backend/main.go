@@ -40,6 +40,7 @@ func main() {
 
 	userhandler := &handler.UserHandler{UR: db}
 
+	e.GET("/captcha", handler.GetCaptcha)
 	e.POST("/login", userhandler.Login)
 	e.POST("/register", userhandler.Register)
 	e.GET("/users", userhandler.GetAllUser)
