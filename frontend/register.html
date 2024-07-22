@@ -64,8 +64,8 @@
           <a class="nav-link" aria-current="page" href="#intro">Home</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="register.html" rel="nofollow"
-             target="_blank">Register</a>
+          <a class="nav-link" href="index.html" rel="nofollow"
+             target="_blank">Login</a>
         </li>
 
       </ul>
@@ -116,8 +116,8 @@
 
             <!-- 2 column grid layout for inline styling -->
             <div class="row mb-4">
-              <div class="error_msg" id="pwd_login" style="display:none; color: red;">Username or password incorrect!</div>
-              <div class="col d-flex justify-content-center">
+              <div class="error_msg" id="pwd_login" style="display:none; color: red;">Username already exists!</div>
+              <div class="col d-flex">
                 <!-- Checkbox -->
                 <div class="form-check">
                   <input class="form-check-input" type="checkbox" value="" id="form1Example3" checked />
@@ -127,14 +127,11 @@
                 </div>
               </div>
 
-              <div class="col text-center">
-                <!-- Simple link -->
-                <a href="#!">Forgot password?</a>
-              </div>
+              
             </div>
 
             <!-- Submit button -->
-            <button type="submit" class="btn btn-primary btn-block" data-mdb-ripple-init>Log in</button>
+            <button type="submit" class="btn btn-primary btn-block" data-mdb-ripple-init>Register</button>
           </form>
         </div>
       </div>
@@ -181,7 +178,7 @@
     
         console.log(formData)
         // Send a POST request with the form data
-        fetch('http://localhost:8080/login', {
+        fetch('http://localhost:8080/register', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -192,7 +189,7 @@
         .then(data => {
           console.log('Success:', data.message);
 
-          if (data.message == "LOGIN SUCCESS") {
+          if (data.message == "REGISTER SUCCESS") {
             // Store some data in session storage
             sessionStorage.setItem('user', JSON.stringify({ id: data.data.user_id, username: data.data.username }));
             window.location.href = 'user_data.html';
