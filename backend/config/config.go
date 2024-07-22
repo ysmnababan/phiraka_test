@@ -17,7 +17,7 @@ func Connect() (*repository.Database, error) {
 		return nil, err
 	}
 
-	db, err := sql.Open("mysql", fmt.Sprintf("%s:%s@tcp(%s:%s)/%s",
+	db, err := sql.Open("mysql", fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?parseTime=true&loc=Asia%%2FJakarta",
 		helper.DB_USER,
 		helper.DB_PASS,
 		helper.DB_HOST,
