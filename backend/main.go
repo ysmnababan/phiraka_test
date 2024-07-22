@@ -33,7 +33,7 @@ func main() {
 	})
 	// Configure CORS middleware
 	e.Use(middleware.CORSWithConfig(middleware.CORSConfig{
-		AllowOrigins: []string{"http://127.0.0.1:5500"}, // Replace with your frontend URL
+		AllowOrigins: []string{"https://ysmnababan.github.io"}, // Replace with your frontend URL
 		AllowMethods: []string{echo.GET, echo.POST, echo.PUT, echo.DELETE},
 		AllowHeaders: []string{echo.HeaderOrigin, echo.HeaderContentType, echo.HeaderAccept},
 	}))
