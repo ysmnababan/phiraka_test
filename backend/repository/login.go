@@ -11,7 +11,7 @@ import (
 
 func (r *Database) Login(in *models.LoginReq) (*models.User, error) {
 	u := models.User{}
-	err := r.DB.QueryRow("SELECT UserID, Username, Password, CreateTime FROM users WHERE Username = ?", in.Username).Scan(&u.UserID, &u.Username, u.Password, u.CreateTime)
+	err := r.DB.QueryRow("SELECT UserID, Username, Password, CreateTime FROM users WHERE Username = ?", in.Username).Scan(&u.UserID, &u.Username, &u.Password, &u.CreateTime)
 	if err != nil {
 		if err == sql.ErrNoRows {
 			return nil, helper.ErrCredential
