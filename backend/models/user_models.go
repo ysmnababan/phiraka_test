@@ -8,3 +8,22 @@ type User struct {
 	Password   string
 	CreateTime time.Time
 }
+
+type LoginReq struct {
+	Username string
+	Password string
+}
+
+type RegisterReq struct {
+	Username string
+	Password string
+}
+
+type EditReq struct {
+	Username string
+	Password string
+}
+
+type DeleteReq struct {
+	Username string
+}
