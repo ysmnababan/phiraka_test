@@ -40,6 +40,8 @@
       }
     </style>
 
+<script>
+  const API_URL = 'https://phiraka-api-753cnjdw3a-et.a.run.app'
 </script>
   </head>
   <body>
@@ -178,7 +180,7 @@
     
         console.log(formData)
         // Send a POST request with the form data
-        fetch('http://localhost:8080/register', {
+        fetch(`${API_URL}/register`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',

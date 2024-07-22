@@ -40,7 +40,10 @@
       }
     </style>
 
-</script>
+    <script>
+      const API_URL = 'https://phiraka-api-753cnjdw3a-et.a.run.app'
+
+    </script>
   </head>
   <body>
     <!-- Start your project here-->
@@ -183,7 +186,7 @@
     <script>
       // Function to load CAPTCHA image
       function loadCaptcha() {
-            fetch('http://localhost:8080/captcha')
+            fetch(`${API_URL}/captcha`)
                 .then(response => response.json())
                 .then(data => {
                     document.getElementById('captchaImage').src = data.captcha_image;
@@ -210,7 +213,7 @@
             };
 
             // Send a POST request with the form data
-            fetch('http://localhost:8080/login', {
+            fetch(`${API_URL}/login`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

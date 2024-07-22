@@ -1,6 +1,7 @@
 document.addEventListener('DOMContentLoaded', function() {
+  const API_URL = 'https://phiraka-api-753cnjdw3a-et.a.run.app'
     // Fetch and display user data
-    fetch('http://localhost:8080/users') // Replace with your API URL
+    fetch(`${API_URL}/users`) // Replace with your API URL
       .then(response => response.json()) // Parse JSON response
       .then(data => {
         const tbody = document.querySelector('#userTable tbody');
@@ -87,7 +88,7 @@ document.addEventListener('DOMContentLoaded', function() {
       password: updatedPassword
     };
   
-    fetch(`http://localhost:8080/user`, {
+    fetch(`${API_URL}/user`, {
       method: 'PUT', // Assuming your API uses PUT for updates
       headers: {
         'Content-Type': 'application/json',
@@ -124,7 +125,7 @@ document.addEventListener('DOMContentLoaded', function() {
         var formData = {
             username: username,
           };
-      fetch(`http://localhost:8080/user`, {
+      fetch(`${API_URL}/user`, {
         method: 'DELETE',
         headers: {
             'Content-Type': 'application/json',
