@@ -32,5 +32,8 @@ func (h *UserHandler) Login(e echo.Context) error {
 		return helper.ParseError(err, e)
 	}
 	log.Println(res)
-	return e.JSON(http.StatusOK, "LOGIN SUCCESS")
+	return e.JSON(http.StatusOK, map[string]interface{}{
+		"message": "LOGIN SUCCESS",
+		"data":    res,
+	})
 }
