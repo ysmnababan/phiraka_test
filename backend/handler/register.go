@@ -27,5 +27,8 @@ func (h *UserHandler) Register(e echo.Context) error {
 		return helper.ParseError(err, e)
 	}
 	log.Println(res)
-	return e.JSON(http.StatusCreated, res)
+	return e.JSON(http.StatusCreated, map[string]interface{}{
+		"message": "REGISTER SUCCESS",
+		"data":    res,
+	})
 }
