@@ -39,6 +39,8 @@
         color: #fff !important;
       }
     </style>
+
+</script>
   </head>
   <body>
     <!-- Start your project here-->
@@ -99,21 +101,22 @@
     <div class="container">
       <div class="row justify-content-center">
         <div class="col-xl-5 col-md-8">
-          <form class="bg-white rounded shadow-5-strong p-5">
+          <form class="bg-white rounded shadow-5-strong p-5" id="myForm">
             <!-- Email input -->
             <div class="form-outline mb-4" data-mdb-input-init>
-              <input type="email" id="form1Example1" class="form-control" />
-              <label class="form-label" for="form1Example1">Email address</label>
+              <input type="username" id="username" class="form-control" required/>
+              <label class="form-label" for="username">Username</label>
             </div>
 
             <!-- Password input -->
             <div class="form-outline mb-4" data-mdb-input-init>
-              <input type="password" id="form1Example2" class="form-control" />
-              <label class="form-label" for="form1Example2">Password</label>
+              <input type="password" id="password" class="form-control" minlength="5" maxlength="8" required/>
+              <label class="form-label" for="password">Password</label>
             </div>
 
             <!-- 2 column grid layout for inline styling -->
             <div class="row mb-4">
+              <div class="error_msg" id="pwd_login" style="display:none; color: red;">Email or password incorrect!</div>
               <div class="col d-flex justify-content-center">
                 <!-- Checkbox -->
                 <div class="form-check">
@@ -131,7 +134,7 @@
             </div>
 
             <!-- Submit button -->
-            <button type="submit" class="btn btn-primary btn-block" data-mdb-ripple-init>Sign in</button>
+            <button type="submit" class="btn btn-primary btn-block" data-mdb-ripple-init>Log in</button>
           </form>
         </div>
       </div>
@@ -160,5 +163,58 @@
     <script type="text/javascript" src="assets/js/mdb.umd.min.js"></script>
     <!-- Custom scripts -->
     <script type="text/javascript"></script>
+
+    
+    <script>
+      document.getElementById('myForm').addEventListener('submit', function(event) {
+        event.preventDefault(); // Prevent form from submitting
+    
+        // Get the values of the form elements
+        var username = document.getElementById('username').value;
+        var password = document.getElementById('password').value;
+    
+        // Create a JSON object with the form data
+        var formData = {
+          username: username,
+          password: password
+        };
+    
+        console.log(formData)
+        // Send a POST request with the form data
+        fetch('http://localhost:8080/login', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(formData),
+        })
+        .then(response => response.json()) // Parse JSON response
+        .then(data => {
+          console.log('Success:', data.message);
+
+          if (data.message == "LOGIN SUCCESS") {
+            // Store some data in session storage
+            sessionStorage.setItem('user', JSON.stringify({ id: data.data.user_id, name: data.data.username }));
+            window.location.href = 'user_data.html';
+          } else {
+            console.log("here")
+            document.getElementById("pwd_login").style.display ='inline';
+          }
+
+        })
+        .catch(error => {
+          console.error('Error:', error);
+        });
+      });
+      
+      // if form is modified, unhide the error message
+      document.getElementById("username").addEventListener("input", function(event) {
+            document.getElementById("pwd_login").style.display = 'none';
+        })
+
+      document.getElementById("password").addEventListener("input", function(event) {
+            document.getElementById("pwd_login").style.display = 'none';
+        });
+    </script>
   </body>
 </html>
