@@ -20,6 +20,7 @@ type RegisterReq struct {
 }
 
 type EditReq struct {
+	UserID   int
 	Username string
 	Password string
 }

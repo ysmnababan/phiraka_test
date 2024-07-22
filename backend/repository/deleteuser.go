@@ -1,8 +1,25 @@
 package repository
 
-import "backend/models"
+import (
+	"backend/helper"
+	"backend/models"
+)
 
-func (r *Database) DeleteUser(in *models.DeleteReq) (*models.User, error) {
+func (r *Database) DeleteUser(in *models.DeleteReq) error {
+	exists, err := r.usernameExists(in.Username)
+	if err != nil {
+		helper.Logging(nil).Error("ERR REPO: ", err)
+		return helper.ErrQuery
+	}
+	if !exists {
+		return  helper.ErrNoUser
+	}
 
-	return &models.User{}, nil
+	_, err = r.DB.Exec("DELETE FROM users WHERE Username = ? ", in.Username)
+	if err != nil {
+		helper.Logging(nil).Error("ERR REPO: ", err)
+		return helper.ErrQuery
+	}
+
+	return nil
 }
