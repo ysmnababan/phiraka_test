@@ -1,0 +1,18 @@
+body {
+    font-family: Arial, sans-serif;
+}
+
+form {
+    margin-bottom: 20px;
+}
+
+#fibonacciGrid {
+    display: grid;
+    gap: 5px;
+}
+
+.grid-item {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: center;
+}
