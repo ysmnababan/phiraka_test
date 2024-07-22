@@ -10,10 +10,14 @@ import (
 	"github.com/labstack/echo/v4/middleware"
 )
 
+func init() {
+	helper.LoadEnv()
+}
+
 func main() {
 	db, err := config.Connect()
 	if err != nil {
-		log.Fatalf("Error connecting to db:", err)
+		log.Fatalf("Error connecting to db: %v", err)
 	}
 
 	defer db.Close()

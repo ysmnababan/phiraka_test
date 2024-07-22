@@ -1,10 +1,12 @@
 package config
 
 import (
+	"backend/helper"
 	repository "backend/repository"
 	"database/sql"
 	"fmt"
-	"os"
+
+	_ "github.com/go-sql-driver/mysql"
 
 	"github.com/joho/godotenv"
 )
@@ -16,11 +18,11 @@ func Connect() (*repository.Database, error) {
 	}
 
 	db, err := sql.Open("mysql", fmt.Sprintf("%s:%s@tcp(%s:%s)/%s",
-		os.Getenv("DB_USER"),
-		os.Getenv("DB_PASS"),
-		os.Getenv("DB_HOST"),
-		os.Getenv("DB_PORT"),
-		os.Getenv("DB_NAME")))
+		helper.DB_USER,
+		helper.DB_PASS,
+		helper.DB_HOST,
+		helper.DB_PORT,
+		helper.DB_NAME))
 
 	if err != nil {
 		fmt.Println(err)
