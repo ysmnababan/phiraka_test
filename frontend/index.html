@@ -113,6 +113,17 @@
               <input type="password" id="password" class="form-control" minlength="5" maxlength="8" required/>
               <label class="form-label" for="password">Password</label>
             </div>
+            
+
+            <!-- CAPTCHA -->
+            <img id="captchaImage" src="" alt="CAPTCHA" style="margin-left: 80px; margin-bottom: 20px;"/>
+            <div class="form-outline mb-4" data-mdb-input-init>
+              <input type="text" id="captcha" class="form-control" placeholder="Enter CAPTCHA" required />
+              <label class="form-label" for="captcha">Insert captcha</label>
+              <input type="hidden" id="captchaID" />
+            </div>
+            <div class="error_msg_captcha" id="captchaError" style="display:none; color: red;">CAPTCHA incorrect!</div>
+
 
             <!-- 2 column grid layout for inline styling -->
             <div class="row mb-4">
@@ -166,48 +177,65 @@
 
     
     <script>
-      document.getElementById('myForm').addEventListener('submit', function(event) {
-        event.preventDefault(); // Prevent form from submitting
-    
-        // Get the values of the form elements
-        var username = document.getElementById('username').value;
-        var password = document.getElementById('password').value;
-    
-        // Create a JSON object with the form data
-        var formData = {
-          username: username,
-          password: password
-        };
-    
-        console.log(formData)
-        // Send a POST request with the form data
-        fetch('http://localhost:8080/login', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(formData),
-        })
-        .then(response => response.json()) // Parse JSON response
-        .then(data => {
-          console.log('Success:', data.message);
+      // Function to load CAPTCHA image
+      function loadCaptcha() {
+            fetch('http://localhost:8080/captcha')
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('captchaImage').src = data.captcha_image;
+                    document.getElementById('captchaID').value = data.captcha_id;
+                })
+                .catch(error => console.error('Error:', error));
+        }
 
-          if (data.message == "LOGIN SUCCESS") {
-            // Store some data in session storage
-            sessionStorage.setItem('user', JSON.stringify({ id: data.data.user_id, username: data.data.username }));
-            window.location.href = 'user_data.html';
-          } else {
-            console.log("here")
-            document.getElementById("pwd_login").style.display ='inline';
-          }
+        document.getElementById('myForm').addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent form from submitting
 
-        })
-        .catch(error => {
-          console.error('Error:', error);
+            // Get the values of the form elements
+            var username = document.getElementById('username').value;
+            var password = document.getElementById('password').value;
+            var captchaID = document.getElementById('captchaID').value;
+            var captcha = document.getElementById('captcha').value;
+
+            // Create a JSON object with the form data
+            var formData = {
+                username: username,
+                password: password,
+                captcha_id: captchaID,
+                captcha: captcha
+            };
+
+            // Send a POST request with the form data
+            fetch('http://localhost:8080/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(formData),
+            })
+            .then(response => response.json()) // Parse JSON response
+            .then(data => {
+                if (data.message === "LOGIN SUCCESS") {
+                    // Store some data in session storage
+                    sessionStorage.setItem('user', JSON.stringify({ id: data.data.user_id, username: data.data.username }));
+                    window.location.href = 'user_data.html';
+                } else if (data.message === "CAPTCHA INVALID") {
+                    document.getElementById("captchaError").style.display = "block";
+                    loadCaptcha(); // Reload CAPTCHA on error
+                } else {
+                    // Handle other errors
+                    console.log("Error:", data.message);
+                    document.getElementById("pwd_login").style.display ='inline';
+                    loadCaptcha(); // Reload CAPTCHA on error
+                }
+            })
+            .catch(error => console.error('Error:', error));
         });
-      });
-      
-      // if form is modified, unhide the error message
+
+        // Load CAPTCHA on page load
+        window.onload = loadCaptcha;
+
+        // if form is modified, unhide the error message
       document.getElementById("username").addEventListener("input", function(event) {
             document.getElementById("pwd_login").style.display = 'none';
         })
@@ -215,6 +243,10 @@
       document.getElementById("password").addEventListener("input", function(event) {
             document.getElementById("pwd_login").style.display = 'none';
         });
+      document.getElementById("captcha").addEventListener("input", function(event) {
+            document.getElementById("captchaError").style.display = 'none';
+        });
     </script>
+
   </body>
 </html>
