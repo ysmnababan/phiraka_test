@@ -194,7 +194,7 @@
 
           if (data.message == "LOGIN SUCCESS") {
             // Store some data in session storage
-            sessionStorage.setItem('user', JSON.stringify({ id: data.data.user_id, name: data.data.username }));
+            sessionStorage.setItem('user', JSON.stringify({ id: data.data.user_id, username: data.data.username }));
             window.location.href = 'user_data.html';
           } else {
             console.log("here")

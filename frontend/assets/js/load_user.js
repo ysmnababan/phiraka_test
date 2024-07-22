@@ -127,7 +127,20 @@ document.addEventListener('DOMContentLoaded', function() {
           console.log('User deleted:', result);
         if (result == "USER DELETED SUCCESSFULLY"){
             // Refresh the table after deletion
-            location.reload();
+            const userData = sessionStorage.getItem('user');
+            const user = JSON.parse(userData);
+            if (username == user.username){
+                // Clear session storage
+                sessionStorage.clear();
+
+                // Clear local storage (if used)
+                localStorage.clear();
+
+                // Redirect to the login page (in case server logout is not implemented)
+                window.location.href = 'index.html';
+            } else {
+                location.reload();
+            }
         }
       })
       .catch(error => {

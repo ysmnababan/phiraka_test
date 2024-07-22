@@ -86,7 +86,7 @@
           <a class="nav-link" aria-current="page" href="index.html">Home</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="index.html" rel="nofollow"
+          <a class="nav-link" href="#" rel="nofollow" onclick="logout()"
              target="_blank">Log out</a>
         </li>
 
@@ -94,6 +94,9 @@
 
       <ul class="navbar-nav d-flex flex-row">
         <!-- Icons -->
+        <li class="nav-item me-3 me-lg-0">
+          <div class="nav-link">Hello, <span class="user-name"></span></div>
+        </li>
         <li class="nav-item me-3 me-lg-0">
           <a class="nav-link" href="https://www.youtube.com/@diskusirecehbyphiraka9824" rel="nofollow"
              target="_blank">
@@ -159,5 +162,41 @@
 
     
     <script src="assets/js/load_user.js"></script>
+    <script>
+      function logout() {
+  // Clear session storage
+  sessionStorage.clear();
+
+  // Clear local storage (if used)
+  localStorage.clear();
+
+  // Redirect to the login page (in case server logout is not implemented)
+  window.location.href = 'index.html';
+}
+
+function displayUserName() {
+            // Retrieve user data from sessionStorage
+            const userData = sessionStorage.getItem('user');
+            
+            if (userData) {
+                // Parse the JSON data
+                const user = JSON.parse(userData);
+                // Find the span element with class 'user-name'
+                const userNameSpan = document.querySelector('.user-name');
+                
+                // Check if the span element exists
+                if (userNameSpan) {
+                  // Set the text content of the span to the user's name
+                  console.log(user.username)
+                    userNameSpan.textContent = user.username;
+                }
+            } else {
+                console.log('No user data found in sessionStorage.');
+            }
+        }
+
+        // Call the function to display the user name
+        displayUserName();
+    </script>
   </body>
 </html>
