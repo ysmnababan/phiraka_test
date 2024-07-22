@@ -98,8 +98,17 @@ document.addEventListener('DOMContentLoaded', function() {
     .then(result => {
       console.log('User updated:', result);
       if (result === "USER UPDATED SUCCESSFULLY") {
+        const userData = sessionStorage.getItem('user');
+        const user = JSON.parse(userData);
+        console.log(user.id)
+        if ( user.id == userId){
+            sessionStorage.setItem('user', JSON.stringify({ id: userId, username: updatedUsername }));
+        }
         location.reload(); // Refresh the table after updating
-      } else {
+      } else if (result.message === "user already exist") {
+        alert('User already exists. Please choose a different username.');
+        location.reload();
+      }else {
         console.error('Error updating user:', result);
       }
     })
